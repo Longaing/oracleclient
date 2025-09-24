@@ -28,9 +28,9 @@ public class OraclePaddingClient {
     protected byte[] buildPaddingArray(int n) {
         byte[] result = new byte[BLOCK_SIZE];
 
-        /**
-         * TODO : Your CODE HERE
-         */
+        for (int i=BLOCK_SIZE - n; i < BLOCK_SIZE; i++){
+            result[i] = (byte) n;
+        }
         return result;
     }
 
@@ -48,9 +48,13 @@ public class OraclePaddingClient {
     protected byte[] buildGuessForPosition(byte[] iv, byte[] decoded, int position, byte guess) {
         byte[] result = new byte[BLOCK_SIZE];
 
-        /**
-         * TODO : YOUR CODE HERE
-         */
+        for (int i=0; i<BLOCK_SIZE; i++){
+            if (i==position) {
+                result[i] = (byte) (iv[i] ^guess ^1);
+            }else {
+                result[i]=iv[i];
+            }
+        }
 
         return result;
     }
@@ -90,9 +94,12 @@ public class OraclePaddingClient {
 
         byte[][] result = new byte[blocNumber][BLOCK_SIZE];
 
-        /*
-        TODO : YOUR CODE HERE
-         */
+
+        for ( int i=0; i<blocNumber; i++){
+            for (int j=0; j<BLOCK_SIZE; j++){
+                result [i][j] = message [i * BLOCK_SIZE + j];
+            }
+        }
         return result;
     }
 
