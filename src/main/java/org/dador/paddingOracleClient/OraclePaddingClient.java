@@ -75,10 +75,15 @@ public class OraclePaddingClient {
      * @throws URISyntaxException
      */
     public int getPaddingLengthForLastBlock(PaddingOracleQuery poq, byte[] previousbloc, byte[] lastbloc) throws IOException, URISyntaxException {
-        /**
-         * TODO : Your Code HERE
-         */
-        // should not arrive here !
+        for (int padLen = 1; padLen <= BLOCK_SIZE; padLen++) {
+            byte[] modified = previousbloc.clone();
+
+            modified[BLOCK_SIZE - padLen] ^= 0x01;
+            String query = toHexFromByteArray(modified) + toHexFromByteArray(lastbloc);
+            if (poq.query(query)) {
+                return padLen;
+            }
+        }
         return 0;
     }
 
@@ -178,8 +183,8 @@ public class OraclePaddingClient {
             String hexresult = "";
             int padlen;
 
-            //for (int i = 0; i < messageblocks.length - 1; i++) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < messageblocks.length - 1; i++) {
+            // (int i = 0; i < 1; i++) {
 
                 if (i == messageblocks.length - 2) {
                     System.out.print("Decodage du dernier bloc : calcul du padding");
